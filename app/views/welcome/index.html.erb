@@ -1,0 +1,6 @@
+<h1 class="welcome-banner">Facebook Lite 2.0</h1>
+<img src="http://www.freeiconspng.com/uploads/facebook-f-logo-transparent-facebook-f-22.png" height="300" width="250">
+<!-- TODO: Greet the current user! -->
+<% if logged_in? %>
+  <h1 class="welcome-banner"> Hi, <%= current_user.name %>!</h1>
+<% end %>

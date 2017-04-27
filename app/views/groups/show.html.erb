@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @group.name %>
+  <strong>Admin:</strong>
+  <%= @group.user.name %>
+</p>
+
+<table class="center">
+  <thead>
+    <tr>
+      <th>Group Members</th>
+      <% if logged_in? && current_user == @group.user %>
+        <th> Admin Action </th>
+      <% end %>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @group.users.each do |u| %>
+    <tr>
+      <td><%= u.name %></td>
+      <% if logged_in? && current_user == @group.user && u != current_user %>
+        <td><%= link_to 'Remove From Group', "/groups/#{@group.id}/users/#{u.id}", method: :delete%></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%if logged_in?%>
+  <a href = "/groups/<%=@group.id%>/users" data-method="post" style="margin: 0 auto; display:block; text-align: center">Join</a>
+  <a href = "/groups/<%=@group.id%>/users" data-method="delete" style="margin: 0 auto; display:block; text-align: center">Leave</a>
+<% end %><br>
+
+<% if logged_in? && current_user == @group.user %>
+  <h3><%= link_to 'Edit Name', edit_group_path(@group) %> <%= link_to 'Delete Group', @group, method: :delete, data: { confirm: 'Are you sure?' } %></h3>
+</h3>
+<% end %>
+
+<h3><%= link_to 'Back', groups_path %></h3>

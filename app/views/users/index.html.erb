@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Facebook Users</h1>
+
+<table class="center">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Profile</th>
+      <th>Action</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= user.email %></td>
+      <td><%= link_to 'Show', user %></td>
+      <% if current_user != nil && user.name == current_user.name && logged_in? %>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% else %>
+        <% checked = false %>
+        <% @friendships.each do |friendship| %>
+          <% if current_user != nil && friendship.is_friend? && ((current_user.id == friendship.sender_id && user.id == friendship.receiver_id) || (current_user.id == friendship.receiver_id && user.id == friendship.sender_id))%>
+              <td><%= link_to 'Say Hello!', "/users/#{current_user.id}/friendships/#{user.id}", method: :post%></td>
+              <% checked = true %>
+          <% end %>
+          <% if current_user != nil && !friendship.is_friend && ((current_user.id == friendship.sender_id && user.id == friendship.receiver_id) || (current_user.id == friendship.receiver_id && user.id == friendship.sender_id)) %>
+          
+                <% checked = true %>
+          <% end %>
+        <% end %>
+
+        <% if logged_in? && !checked %>
+          <td><%= link_to 'Send Friend Request', "/users/#{user.id}/friendships", method: :post %></td>
+        <% end %>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

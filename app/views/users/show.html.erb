@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <% @user.statuses.each do |s| %>
+    <h3><%= s.text %></h3>
+    <% if current_user != nil && @user.id == current_user.id && logged_in? %>
+      <h3><%= link_to 'Edit', "/statuses/#{s.id}/edit" %> |
+      <%= link_to 'Destroy', s, method: :delete, data: { confirm: 'Are you sure?' } %></h3><br>
+    <% end %>
+  <% end %>
+</p>
+
+<% if current_user != nil && @user.id == current_user.id && logged_in? %>
+  <h3><%= link_to 'New Status', "/statuses/new" %>
+  <%= link_to 'Edit', edit_user_path(@user) %>
+  <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %></h3>
+<% end %>
+<h3><%= link_to 'Back', users_path %></h3>
